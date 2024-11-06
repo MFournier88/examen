@@ -1,26 +1,18 @@
-# test.py
-# Connecter le module ADS1115 au Pi
-# Connecter un module Keystudio LED à GPIO 26
 import pigpio
-import busio
-import board
 import time
 
-from adafruit_ads1x15.ads1115 import ADS1115
-from adafruit_ads1x15.ads1115 import P0
-from adafruit_ads1x15.analog_in import AnalogIn
-
-i2c = busio.I2C(board.SCL, board.SDA)
-ads = ADS1115(i2c,2)
-data = AnalogIn(ads, P0)
-
-GPIO = 26
+LED = 26
+MAX = 255 # La valeur maximale que set_PWM_dutycycle() accepte
 pi = pigpio.pi()
-pi.set_mode(GPIO,pigpio.OUTPUT)
+pi.set_mode(LED,pigpio.OUTPUT)
+cycle = 0 # Variable qui correspond à l'intensité (simulée) du voltage
 
-while True:
-    print(data.value, data.voltage)
-    pi.write(GPIO,1)
-    time.sleep(0.5)
-    pi.write(GPIO,0)
-    time.sleep(0.5)
+try:
+    while cycle < MAX:
+        cycle += 1
+        pi.set_PWM_dutycycle(LED,cycle)
+        time.sleep(0.01)
+    pi.write(LED,0)
+    
+except KeyboardInterrupt:
+    pi.write(LED,0)
