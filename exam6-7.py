@@ -3,6 +3,7 @@ import busio
 from time import sleep
 from adafruit_ht16k33 import matrix
 import pigpio
+from random import randint
 
 servo = 21 # Le numéro GPIO de la broche ou est connecté le servomoteur
 FREQ = 50 # Fréquence en Hz de la période
@@ -16,4 +17,6 @@ i2c = busio.I2C(board.SCL, board.SDA)
 mat = matrix.Matrix8x8(i2c)
 
 ## NE PAS MODIFIER CE QUI EST CI-DESSUS!! N'utilisez pas d'autre GPIO que le 21
-
+while True:
+    print(randint(0,10))
+    sleep(0.5)
